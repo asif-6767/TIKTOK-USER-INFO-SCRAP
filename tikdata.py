@@ -23,35 +23,22 @@ class Colors:
     BOLD = '\033[1m'
     DIM = '\033[2m'
     RESET = '\033[0m'
-    BG_BLACK = '\033[40m'
-    BG_RED = '\033[41m'
-    BG_GREEN = '\033[42m'
-    BG_YELLOW = '\033[43m'
-    BG_BLUE = '\033[44m'
-    BG_MAGENTA = '\033[45m'
-    BG_CYAN = '\033[46m'
-    BG_WHITE = '\033[47m'
 
 # ============= TERMINAL UTILITIES =============
 def clear():
     os.system('clear' if os.name == 'posix' else 'cls')
 
-def get_terminal_width():
+def get_width():
     try:
         return os.get_terminal_size().columns
     except:
         return 80
 
-def center_text(text, width=None):
+def center(text, width=None):
     if width is None:
-        width = get_terminal_width()
+        width = get_width()
     padding = max(0, (width - len(text)) // 2)
     return ' ' * padding + text
-
-def hr(char='═', width=None):
-    if width is None:
-        width = get_terminal_width()
-    return char * min(width, 80)
 
 # ============= ANIMATIONS =============
 def loading(text="Processing", duration=1.5):
@@ -77,10 +64,11 @@ def matrix_effect(duration=1.5):
     sys.stdout.write('\r' + ' ' * 50 + '\r')
     sys.stdout.flush()
 
-def progress_bar(percent, width=30):
-    filled = int(width * percent / 100)
-    bar = '█' * filled + '░' * (width - filled)
-    return f"[{Colors.CYAN}{bar}{Colors.RESET}] {percent}%"
+def box(text, color=Colors.CYAN):
+    width = min(get_width(), 60)
+    print(f"{color}┌{'─' * (width-2)}┐{Colors.RESET}")
+    print(f"{color}│ {text[:width-4]:<{width-4}} │{Colors.RESET}")
+    print(f"{color}└{'─' * (width-2)}┘{Colors.RESET}")
 
 # ============= BANNER =============
 def show_banner():
@@ -88,34 +76,34 @@ def show_banner():
     matrix_effect(0.8)
     
     banner = f"""
-{Colors.BG_BLACK}{Colors.CYAN}╔══════════════════════════════════════════════════════════════╗
-{Colors.BG_BLACK}{Colors.CYAN}║{Colors.WHITE}  ████████╗██╗  ██╗██╗  ████████╗ ██████╗ ██╗  ██╗{Colors.CYAN} ║
-{Colors.BG_BLACK}{Colors.CYAN}║{Colors.WHITE}  ╚══██╔══╝██║  ██║██║  ╚══██╔══╝██╔═══██╗██║ ██╔╝{Colors.CYAN} ║
-{Colors.BG_BLACK}{Colors.CYAN}║{Colors.WHITE}     ██║   ███████║██║     ██║   ██║   ██║█████╔╝ {Colors.CYAN} ║
-{Colors.BG_BLACK}{Colors.CYAN}║{Colors.WHITE}     ██║   ██╔══██║██║     ██║   ██║   ██║██╔═██╗ {Colors.CYAN} ║
-{Colors.BG_BLACK}{Colors.CYAN}║{Colors.WHITE}     ██║   ██║  ██║██║     ██║   ╚██████╔╝██║  ██╗{Colors.CYAN} ║
-{Colors.BG_BLACK}{Colors.CYAN}║{Colors.WHITE}     ╚═╝   ╚═╝  ╚═╝╚═╝     ╚═╝    ╚═════╝ ╚═╝  ╚═╝{Colors.CYAN} ║
-{Colors.BG_BLACK}{Colors.CYAN}╠══════════════════════════════════════════════════════════════╣
-{Colors.BG_BLACK}{Colors.CYAN}║{Colors.YELLOW}        Public Data Toolkit v3.0{Colors.CYAN}                         ║
-{Colors.BG_BLACK}{Colors.CYAN}║{Colors.MAGENTA}     ⚡ by ᴀꜱɪꜰ ɪꜱʟᴀᴍ ⚡{Colors.CYAN}                           ║
-{Colors.BG_BLACK}{Colors.CYAN}╚══════════════════════════════════════════════════════════════╝{Colors.RESET}
+{Colors.CYAN}╔══════════════════════════════════════════════════════════════╗
+{Colors.CYAN}║{Colors.WHITE}  ████████╗██╗  ██╗██╗  ████████╗ ██████╗ ██╗  ██╗{Colors.CYAN} ║
+{Colors.CYAN}║{Colors.WHITE}  ╚══██╔══╝██║  ██║██║  ╚══██╔══╝██╔═══██╗██║ ██╔╝{Colors.CYAN} ║
+{Colors.CYAN}║{Colors.WHITE}     ██║   ███████║██║     ██║   ██║   ██║█████╔╝ {Colors.CYAN} ║
+{Colors.CYAN}║{Colors.WHITE}     ██║   ██╔══██║██║     ██║   ██║   ██║██╔═██╗ {Colors.CYAN} ║
+{Colors.CYAN}║{Colors.WHITE}     ██║   ██║  ██║██║     ██║   ╚██████╔╝██║  ██╗{Colors.CYAN} ║
+{Colors.CYAN}║{Colors.WHITE}     ╚═╝   ╚═╝  ╚═╝╚═╝     ╚═╝    ╚═════╝ ╚═╝  ╚═╝{Colors.CYAN} ║
+{Colors.CYAN}╠══════════════════════════════════════════════════════════════╣
+{Colors.CYAN}║{Colors.YELLOW}        TikTok Data Toolkit v3.0{Colors.CYAN}                         ║
+{Colors.CYAN}║{Colors.MAGENTA}     ⚡ by ᴀꜱɪꜰ ɪꜱʟᴀᴍ ⚡{Colors.CYAN}                           ║
+{Colors.CYAN}╚══════════════════════════════════════════════════════════════╝{Colors.RESET}
 """
     print(banner)
 
 # ============= MENU =============
 def show_menu():
     menu = f"""
-{Colors.BG_BLACK}{Colors.GREEN}┌────────────────────────────────────────────────────────┐
-{Colors.BG_BLACK}{Colors.GREEN}│{Colors.WHITE}  ╭──────────────────────────────────────────╮  {Colors.GREEN}│
-{Colors.BG_BLACK}{Colors.GREEN}│{Colors.WHITE}  │{Colors.CYAN}  1{Colors.WHITE}  ›  {Colors.YELLOW}User Lookup{Colors.WHITE}              {Colors.CYAN}👤{Colors.WHITE}  │  {Colors.GREEN}│
-{Colors.BG_BLACK}{Colors.GREEN}│{Colors.WHITE}  │{Colors.CYAN}  2{Colors.WHITE}  ›  {Colors.YELLOW}Bulk Scraper{Colors.WHITE}              {Colors.CYAN}📊{Colors.WHITE}  │  {Colors.GREEN}│
-{Colors.BG_BLACK}{Colors.GREEN}│{Colors.WHITE}  │{Colors.CYAN}  3{Colors.WHITE}  ›  {Colors.YELLOW}Exit{Colors.WHITE}                       {Colors.CYAN}🚪{Colors.WHITE}  │  {Colors.GREEN}│
-{Colors.BG_BLACK}{Colors.GREEN}│{Colors.WHITE}  ╰──────────────────────────────────────────╯  {Colors.GREEN}│
-{Colors.BG_BLACK}{Colors.GREEN}└────────────────────────────────────────────────────────┘{Colors.RESET}
+{Colors.GREEN}┌────────────────────────────────────────────────────────┐
+{Colors.GREEN}│{Colors.WHITE}  ┌──────────────────────────────────────────┐  {Colors.GREEN}│
+{Colors.GREEN}│{Colors.WHITE}  │{Colors.CYAN}  1{Colors.WHITE}  ›  {Colors.YELLOW}User Lookup{Colors.WHITE}              {Colors.CYAN}👤{Colors.WHITE}  │  {Colors.GREEN}│
+{Colors.GREEN}│{Colors.WHITE}  │{Colors.CYAN}  2{Colors.WHITE}  ›  {Colors.YELLOW}Bulk Scraper{Colors.WHITE}              {Colors.CYAN}📊{Colors.WHITE}  │  {Colors.GREEN}│
+{Colors.GREEN}│{Colors.WHITE}  │{Colors.CYAN}  3{Colors.WHITE}  ›  {Colors.YELLOW}Exit{Colors.WHITE}                       {Colors.CYAN}🚪{Colors.WHITE}  │  {Colors.GREEN}│
+{Colors.GREEN}│{Colors.WHITE}  └──────────────────────────────────────────┘  {Colors.GREEN}│
+{Colors.GREEN}└────────────────────────────────────────────────────────┘{Colors.RESET}
 """
     print(menu)
 
-# ============= YOUR ORIGINAL FUNCTION (100% WORKING) =============
+# ============= YOUR ORIGINAL FUNCTION =============
 def get_user_info(identifier, by_id=False):
     if by_id:
         url = f"https://www.tiktok.com/@{identifier}"
@@ -169,38 +157,31 @@ def get_user_info(identifier, by_id=False):
         if "profile_pic" in info and info['profile_pic']:
             info['profile_pic'] = info['profile_pic'].replace('\\u002F', '/')
         
-        # Extract social links
         social_links = []
         bio = info.get('signature') or ""
         
-        # Bio links
         bio_link_pattern = r'"bioLink":{"link":"([^"]+)","risk":(\d+)}'
         for link, risk in re.findall(bio_link_pattern, html_content):
             clean = link.replace('\\u002F', '/')
             if clean not in social_links:
                 social_links.append(clean)
         
-        # Span links
         for span in re.findall(r'<span[^>]*class="[^"]*SpanLink[^"]*">([^<]+)</span>', html_content):
             if '.' in span and ' ' not in span and span not in social_links:
                 social_links.append(span)
         
-        # Instagram
         ig = re.search(r'[iI][gG]:\s*@?([a-zA-Z0-9._]+)', bio)
         if ig:
             social_links.append(f"📸 IG: @{ig.group(1)}")
         
-        # YouTube
         yt = re.search(r'([yY][tT]|[yY]outube):\s*@?([a-zA-Z0-9._]+)', bio)
         if yt:
             social_links.append(f"▶️ YT: @{yt.group(2)}")
         
-        # Twitter/X
         tw = re.search(r'([tT]witter|[xX]):\s*@?([a-zA-Z0-9._]+)', bio)
         if tw:
             social_links.append(f"🐦 X: @{tw.group(2)}")
         
-        # Email
         email = re.search(r'[\w.+-]+@[\w-]+\.[\w.-]+', bio)
         if email:
             social_links.append(f"✉️ {email.group(0)}")
@@ -211,28 +192,17 @@ def get_user_info(identifier, by_id=False):
         return None
 
 # ============= DISPLAY FUNCTIONS =============
-def box(text, color=Colors.CYAN, width=None):
-    if width is None:
-        width = get_terminal_width()
-    width = min(width, 60)
-    text = text[:width-4]
-    print(f"{color}┌{'─' * (width-2)}┐{Colors.RESET}")
-    print(f"{color}│ {text:<{width-4}} │{Colors.RESET}")
-    print(f"{color}└{'─' * (width-2)}┘{Colors.RESET}")
-
 def display_user(info):
     if not info:
         box("✗ No data found", Colors.RED)
         return
     
-    width = min(get_terminal_width(), 60)
+    width = min(get_width(), 60)
     
-    # Header
     print(f"\n{Colors.GREEN}╔{'═' * (width-2)}╗{Colors.RESET}")
     print(f"{Colors.GREEN}║{Colors.WHITE}  📊 PROFILE DATA{Colors.GREEN}{' ' * (width-18)}║{Colors.RESET}")
     print(f"{Colors.GREEN}╚{'═' * (width-2)}╝{Colors.RESET}\n")
     
-    # Basic Info
     print(f"{Colors.CYAN}┌{'─' * (width-2)}┐{Colors.RESET}")
     print(f"{Colors.CYAN}│{Colors.YELLOW}  BASIC INFO{Colors.CYAN}{' ' * (width-15)}│{Colors.RESET}")
     print(f"{Colors.CYAN}├{'─' * (width-2)}┤{Colors.RESET}")
@@ -253,7 +223,6 @@ def display_user(info):
     
     print(f"{Colors.CYAN}└{'─' * (width-2)}┘{Colors.RESET}\n")
     
-    # Stats
     print(f"{Colors.CYAN}┌{'─' * (width-2)}┐{Colors.RESET}")
     print(f"{Colors.CYAN}│{Colors.YELLOW}  STATS{Colors.CYAN}{' ' * (width-11)}│{Colors.RESET}")
     print(f"{Colors.CYAN}├{'─' * (width-2)}┤{Colors.RESET}")
@@ -272,7 +241,6 @@ def display_user(info):
     
     print(f"{Colors.CYAN}└{'─' * (width-2)}┘{Colors.RESET}\n")
     
-    # Bio
     bio = info.get('signature')
     if bio and bio != 'No signature found':
         print(f"{Colors.CYAN}┌{'─' * (width-2)}┐{Colors.RESET}")
@@ -284,7 +252,6 @@ def display_user(info):
         print(f"{Colors.CYAN}│ {Colors.WHITE}{bio_clean:<{width-4}} │{Colors.RESET}")
         print(f"{Colors.CYAN}└{'─' * (width-2)}┘{Colors.RESET}\n")
     
-    # Social Links
     links = info.get('social_links', [])
     if links:
         print(f"{Colors.CYAN}┌{'─' * (width-2)}┐{Colors.RESET}")
@@ -296,7 +263,6 @@ def display_user(info):
             print(f"{Colors.CYAN}│ {Colors.GREEN}•{Colors.WHITE} {link:<{width-6}} │{Colors.RESET}")
         print(f"{Colors.CYAN}└{'─' * (width-2)}┘{Colors.RESET}")
     
-    # Profile URL
     username = info.get('unique_id')
     if username:
         print(f"\n{Colors.CYAN}🔗 {Colors.WHITE}https://www.tiktok.com/@{username}{Colors.RESET}")
@@ -328,7 +294,7 @@ def download_pp(url, username):
 
 # ============= BULK SCRAPER =============
 def bulk_scraper():
-    width = min(get_terminal_width(), 60)
+    width = min(get_width(), 60)
     
     print(f"\n{Colors.CYAN}╔{'═' * (width-2)}╗{Colors.RESET}")
     print(f"{Colors.CYAN}║{Colors.YELLOW}  📊 BULK SCRAPER{Colors.CYAN}{' ' * (width-18)}║{Colors.RESET}")
